@@ -6,7 +6,8 @@
       "likeable",
       "desc",
       "asc",
-      "commitlint"
+      "commitlint",
+      "likers"
     ],
     "paths": []
   }

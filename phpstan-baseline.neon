@@ -1,0 +1,43 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Trait Akira\\Likeable\\Concerns\\Likeable is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Concerns/Likeable.php
+
+		-
+			message: '#^Trait Akira\\Likeable\\Concerns\\Liker is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Concerns/Liker.php
+
+		-
+			message: '#^Cannot call method getMorphClass\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Likeable.php
+
+		-
+			message: '#^Parameter \#1 \$key of method Illuminate\\Database\\Eloquent\\Model\:\:setAttribute\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Likeable.php
+
+		-
+			message: '#^Parameter \#1 \$related of method Illuminate\\Database\\Eloquent\\Model\:\:belongsTo\(\) expects class\-string\<Illuminate\\Database\\Eloquent\\Model\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Likeable.php
+
+		-
+			message: '#^Parameter \#2 \$foreignKey of method Illuminate\\Database\\Eloquent\\Model\:\:belongsTo\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Likeable.php
+
+		-
+			message: '#^Unable to resolve the template type TRelatedModel in call to method Illuminate\\Database\\Eloquent\\Model\:\:belongsTo\(\)$#'
+			identifier: argument.templateType
+			count: 1
+			path: src/Likeable.php
