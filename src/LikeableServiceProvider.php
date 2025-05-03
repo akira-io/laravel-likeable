@@ -20,7 +20,7 @@ final class LikeableServiceProvider extends PackageServiceProvider
             ->name('laravel-likeable')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_laravel_likeable_table')
+            ->hasMigration('create_likeable_table')
             ->hasCommand(LikeableCommand::class);
     }
 
