@@ -1,0 +1,13 @@
+{
+  "preset": "laravel",
+  "ignore": {
+    "words": [
+      "php",
+      "likeable",
+      "desc",
+      "asc",
+      "commitlint"
+    ],
+    "paths": []
+  }
+}
