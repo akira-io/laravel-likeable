@@ -1,5 +1,18 @@
 # Changelog
 
+# [0.2.0](https://github.com/akira-io/laravel-likeable/compare/0.1.1...0.2.0) (2025-05-03)
+
+
+### Bug Fixes
+
+* update package name in composer.json and README.md ([946cb1e](https://github.com/akira-io/laravel-likeable/commit/946cb1ef4b7343fa57ba4663e10ef87dbffbae68))
+
+
+### Features
+
+* add attachLikeStatus method to enhance entities with like status ([5deb831](https://github.com/akira-io/laravel-likeable/commit/5deb8315a9c73f2f32a28dee8b04ff912ba0ed8a))
+* enhance attachLikeStatus method to support various entity types and improve test coverage ([4ab866d](https://github.com/akira-io/laravel-likeable/commit/4ab866def4f47ae2f93d0e5c1391dd27af11eb03))
+
 ## [0.1.1](https://github.com/akira-io/laravel-likeable/compare/0.1.0...0.1.1) (2025-05-03)
 
 
