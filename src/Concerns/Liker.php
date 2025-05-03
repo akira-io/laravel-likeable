@@ -13,7 +13,6 @@ use Illuminate\Pagination\AbstractCursorPaginator;
 use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
-use InvalidArgumentException;
 
 trait Liker
 {
@@ -75,10 +74,8 @@ trait Liker
     /**
      * Check if the user has liked the model and return the status.
      */
-    public function attachLikeStatus(
-        Model|Collection|LazyCollection|Paginator|AbstractPaginator|AbstractCursorPaginator|array &$entities,
-        ?Closure $resolver = null,
-    ): Model|Collection|LazyCollection|Paginator|AbstractPaginator|AbstractCursorPaginator {
+    public function attachLikeStatus(Model|Collection|LazyCollection|Paginator|AbstractPaginator|AbstractCursorPaginator &$entities, ?Closure $resolver = null): Model|Collection|LazyCollection|Paginator|AbstractPaginator|AbstractCursorPaginator
+    {
 
         $likes = $this->getLikesByTypeAndId();
 
@@ -96,8 +93,7 @@ trait Liker
     {
 
         return $this->likes()
-            ->get()
-            ->keyBy(fn ($item) => sprintf('%s:%s', $item->likeable_type, $item->likeable_id));
+            ->get();
     }
 
     /**
@@ -130,8 +126,7 @@ trait Liker
             $entities instanceof AbstractPaginator,
             $entities instanceof AbstractCursorPaginator => $entities->through($enhanceEntityWithLikes),
             $entities instanceof Paginator => collect($entities->items())->map($enhanceEntityWithLikes),
-            is_array($entities) => collect($entities)->map($enhanceEntityWithLikes),
-            default => throw new InvalidArgumentException('Unsupported type for attachLikeStatus.'),
+            default => collect($entities)->each($enhanceEntityWithLikes),
         };
     }
 
@@ -141,7 +136,7 @@ trait Liker
     private function isLikeableEntity($entity): bool
     {
 
-        return $entity && in_array(Likeable::class, class_uses_recursive($entity));
+        return is_object((object) $entity) && in_array(Likeable::class, class_uses_recursive((object) $entity));
     }
 
     /**
@@ -150,7 +145,7 @@ trait Liker
     private function hasLiked(Model $entity, Collection $likes): bool
     {
 
-        return $likes->contains(fn ($like) => $like->likeable_type === $entity->getMorphClass()
+        return $likes->contains(fn ($like): bool => $like->likeable_type === $entity->getMorphClass()
             && $like->likeable_id === $entity->getKey());
     }
 
