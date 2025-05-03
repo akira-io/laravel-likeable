@@ -4,21 +4,26 @@ on: [ push, pull_request ]
 
 jobs:
   test:
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: ubuntu-latest
+        os: [ ubuntu-latest ]
         php: [ 8.4 ]
-        laravel: [ 12*, 11.* ]
+        laravel: [ 12.*, 11.* ]
         stability: [ prefer-stable ]
         include:
           - laravel: 12.*
-            testbench: 10.*,
+            testbench: 10.*
+            os: ubuntu-latest
+            php: 8.4
+            stability: prefer-stable
           - laravel: 11.*
             testbench: 9.*
+            os: ubuntu-latest
+            php: 8.4
+            stability: prefer-stable
 
-    
-    
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
     steps:
