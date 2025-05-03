@@ -22,3 +22,18 @@ it('can like a post', function (): void {
         ->toBe($this->user->id);
 
 });
+
+it('should attach like status', function () {
+
+    $post = Post::query()->create(['name' => fake()->name()]);
+
+    $this->user->like($post);
+
+    $post = $this->user->attachLikeStatus($post);
+
+    expect($post->likesCount())
+        ->toBe(1)
+        ->and($post->has_liked)
+        ->toBeTrue();
+
+});

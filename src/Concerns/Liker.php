@@ -4,9 +4,16 @@ declare(strict_types=1);
 
 namespace Akira\Likeable\Concerns;
 
+use Closure;
 use Exception;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Pagination\AbstractCursorPaginator;
+use Illuminate\Pagination\AbstractPaginator;
+use Illuminate\Support\Collection;
+use Illuminate\Support\LazyCollection;
+use InvalidArgumentException;
 
 trait Liker
 {
@@ -45,7 +52,7 @@ trait Liker
         return $this->hasMany(
             resolve('likeable.model'),
             resolve('likeable.user_foreign_key'),
-            $this->getKeyName()
+            $this->getKeyName(),
         );
     }
 
@@ -63,6 +70,88 @@ trait Liker
         }
 
         return $this->like($model);
+    }
+
+    /**
+     * Check if the user has liked the model and return the status.
+     */
+    public function attachLikeStatus(
+        Model|Collection|LazyCollection|Paginator|AbstractPaginator|AbstractCursorPaginator|array &$entities,
+        ?Closure $resolver = null,
+    ): Model|Collection|LazyCollection|Paginator|AbstractPaginator|AbstractCursorPaginator {
+
+        $likes = $this->getLikesByTypeAndId();
+
+        $resolver ??= fn ($entity) => $entity;
+
+        $enhanceEntityWithLikes = fn ($entity) => $this->enhanceEntityWithLikes($entity, $likes, $resolver);
+
+        return $this->applyEnhancerToEntities($entities, $enhanceEntityWithLikes);
+    }
+
+    /**
+     * Get the likes by type and ID.
+     */
+    private function getLikesByTypeAndId(): Collection
+    {
+
+        return $this->likes()
+            ->get()
+            ->keyBy(fn ($item) => sprintf('%s:%s', $item->likeable_type, $item->likeable_id));
+    }
+
+    /**
+     * Enhance the entity with like status.
+     */
+    private function enhanceEntityWithLikes($entity, Collection $likes, Closure $resolver): mixed
+    {
+
+        $entity = $resolver($entity);
+
+        if ($this->isLikeableEntity($entity)) {
+            $entity->setAttribute('has_liked', $this->hasLiked($entity, $likes));
+        }
+
+        return $entity;
+    }
+
+    /**
+     * Apply the enhancer to the entities.
+     */
+    private function applyEnhancerToEntities(
+        Model|Collection|LazyCollection|Paginator|AbstractPaginator|AbstractCursorPaginator|array $entities,
+        Closure $enhanceEntityWithLikes,
+    ): Model|Collection|LazyCollection|Paginator|AbstractPaginator|AbstractCursorPaginator {
+
+        return match (true) {
+            $entities instanceof Model => $enhanceEntityWithLikes($entities),
+            $entities instanceof Collection => $entities->each($enhanceEntityWithLikes),
+            $entities instanceof LazyCollection => $entities->map($enhanceEntityWithLikes),
+            $entities instanceof AbstractPaginator,
+            $entities instanceof AbstractCursorPaginator => $entities->through($enhanceEntityWithLikes),
+            $entities instanceof Paginator => collect($entities->items())->map($enhanceEntityWithLikes),
+            is_array($entities) => collect($entities)->map($enhanceEntityWithLikes),
+            default => throw new InvalidArgumentException('Unsupported type for attachLikeStatus.'),
+        };
+    }
+
+    /**
+     * Check if the entity is likeable.
+     */
+    private function isLikeableEntity($entity): bool
+    {
+
+        return $entity && in_array(Likeable::class, class_uses_recursive($entity));
+    }
+
+    /**
+     * Check if the user has liked the entity.
+     */
+    private function hasLiked(Model $entity, Collection $likes): bool
+    {
+
+        return $likes->contains(fn ($like) => $like->likeable_type === $entity->getMorphClass()
+            && $like->likeable_id === $entity->getKey());
     }
 
     /**
