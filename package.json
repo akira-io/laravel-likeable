@@ -59,5 +59,6 @@
   "scripts": {
     "prepare": "husky",
     "release": "release-it"
-  }
+  },
+  "version": "0.1.0"
 }
