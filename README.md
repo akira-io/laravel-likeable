@@ -13,7 +13,7 @@ Eloquent models.
 You can install the package via composer:
 
 ```bash
-composer require akira-io/laravel-likeable
+composer require akira/laravel-likeable
 ```
 
 You can publish and run the migrations with:

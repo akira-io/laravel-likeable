@@ -1,5 +1,5 @@
 {
-  "name": "akira-io/laravel-likeable",
+  "name": "akira/laravel-likeable",
   "description": "Laravel Likeable is a lightweight and flexible package that seamlessly adds like and unlike functionality to your Eloquent models. ",
   "keywords": [
     "Akira",
