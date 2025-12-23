@@ -1,14 +1,15 @@
 {
-  "preset": "laravel",
-  "ignore": {
-    "words": [
-      "php",
-      "likeable",
-      "desc",
-      "asc",
-      "commitlint",
-      "likers"
-    ],
-    "paths": []
-  }
+    "preset": "laravel",
+    "ignore": {
+        "words": [
+            "php",
+            "likeable",
+            "desc",
+            "asc",
+            "commitlint",
+            "likers",
+            "roadmap"
+        ],
+        "paths": []
+    }
 }
