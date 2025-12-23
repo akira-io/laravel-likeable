@@ -1,5 +1,17 @@
 # Changelog
 
+# [0.3.0](https://github.com/kidiatoliny/laravel-likeable/compare/0.2.0...0.3.0) (2025-12-23)
+
+
+### Bug Fixes
+
+* add "roadmap" to ignored words in peck.json and remove strictBooleans from rector.php ([778939f](https://github.com/kidiatoliny/laravel-likeable/commit/778939f03f71e57a788b80970c87da94dae1b789))
+
+
+### Features
+
+* add installation and usage documentation for Laravel Likeable ([48ddccd](https://github.com/kidiatoliny/laravel-likeable/commit/48ddccd43a3c78859ad8d7e9c1742ad704674edb))
+
 # [0.2.0](https://github.com/akira-io/laravel-likeable/compare/0.1.1...0.2.0) (2025-05-03)
 
 
